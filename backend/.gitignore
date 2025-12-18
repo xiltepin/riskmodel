@@ -1,32 +1,28 @@
 # Virtual environments
-backend/.venv/
-backend/venv/
 .venv/
 venv/
+env/
 
 # Python
 __pycache__/
 *.py[cod]
 *.so
 *.egg-info/
-*.pyc
 
-# Model files
+# Model files (large)
 *.pkl
 *.joblib
-
-# Environment variables
-.env
-*.env
 
 # Database
 *.db
 *.sqlite
 
+# Environment variables
+.env
+
 # IDE
 .vscode/
 .idea/
-*.swp
 
 # OS
 .DS_Store
@@ -35,6 +31,6 @@ Thumbs.db
 # Logs
 *.log
 
-# Node modules (Angular later)
-frontend/node_modules/
-frontend/dist/
+# Node modules (for Angular later)
+node_modules/
+dist/
