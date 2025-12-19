@@ -109,10 +109,31 @@ def prepare_features(data):
         raise ValueError(f"Error preparing features: {str(e)}")
 
 def log_prediction(input_data, prediction_result):
-    """Log prediction to database for model improvement"""
+    """Log prediction to database for model improvement - FIXED VERSION"""
     try:
         conn = psycopg2.connect(**DB_CONFIG)
         cur = conn.cursor()
+        
+        # CONVERTIR TODOS LOS VALORES A TIPOS NATIVOS DE PYTHON
+        # Esto evita el error "schema np does not exist"
+        safe_data = {
+            'age': int(input_data.get('age', 0)) if input_data.get('age') is not None else None,
+            'gender': str(input_data.get('gender', '')),
+            'years_licensed': int(input_data.get('years_licensed', 0)) if input_data.get('years_licensed') is not None else None,
+            'num_claims_3yr': int(input_data.get('num_claims_3yr', 0)),
+            'total_claim_amount': float(input_data.get('total_claim_amount', 0.0)),
+            'at_fault_claims': int(input_data.get('at_fault_claims', 0)),
+            'vehicle_age': int(input_data.get('vehicle_age', 0)),
+            'annual_mileage': int(input_data.get('annual_mileage', 0)),
+            'credit_score': int(input_data.get('credit_score', 0)),
+            'marital_status': str(input_data.get('marital_status', '')),
+            'prior_insurance_lapses': int(input_data.get('prior_insurance_lapses', 0)),
+            'location_risk_score': float(input_data.get('location_risk_score', 0.5)),
+            'predicted_denial_probability': float(prediction_result['denial_probability']),
+            'predicted_risk_level': str(prediction_result['risk_level']),
+            'model_confidence': float(prediction_result['confidence']),
+            'model_version': str(prediction_result.get('model_version', 'v1.0'))
+        }
         
         cur.execute("""
             INSERT INTO predictions (
@@ -123,30 +144,20 @@ def log_prediction(input_data, prediction_result):
                 predicted_denial_probability, predicted_risk_level,
                 model_confidence, model_version
             ) VALUES (
-                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+                %(age)s, %(gender)s, %(years_licensed)s, %(num_claims_3yr)s,
+                %(total_claim_amount)s, %(at_fault_claims)s, %(vehicle_age)s,
+                %(annual_mileage)s, %(credit_score)s, %(marital_status)s,
+                %(prior_insurance_lapses)s, %(location_risk_score)s,
+                %(predicted_denial_probability)s, %(predicted_risk_level)s,
+                %(model_confidence)s, %(model_version)s
             )
-        """, (
-            input_data.get('age'),
-            input_data.get('gender'),
-            input_data.get('years_licensed'),
-            input_data.get('num_claims_3yr'),
-            input_data.get('total_claim_amount'),
-            input_data.get('at_fault_claims'),
-            input_data.get('vehicle_age'),
-            input_data.get('annual_mileage'),
-            input_data.get('credit_score'),
-            input_data.get('marital_status'),
-            input_data.get('prior_insurance_lapses'),
-            input_data.get('location_risk_score'),
-            prediction_result['denial_probability'],
-            prediction_result['risk_level'],
-            prediction_result['confidence'],
-            model_data['model_version']
-        ))
+        """, safe_data)
         
         conn.commit()
         cur.close()
         conn.close()
+        
+        print("✅ Prediction logged successfully to database")
         
     except Exception as e:
         print(f"⚠️  Warning: Could not log prediction: {e}")

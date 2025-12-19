@@ -44,11 +44,12 @@ def calculate_risk_profile(data):
     elif data['total_claim_amount'] > 20000:
         risk_score += 5
     
-    # Credit score (lower = riskier)
-    if data['credit_score'] < 600:
-        risk_score += 8
-    elif data['credit_score'] < 700:
-        risk_score += 3
+    # License type risk (Japan-specific)
+    if data['license_type'] == 'green':
+        risk_score += 8  # High risk for beginners
+    elif data['license_type'] == 'blue':
+        risk_score += 3  # Medium risk if violations
+    # Gold = 0 (low risk)
     
     # Vehicle age (very old or very new can be problematic)
     if data['vehicle_age'] > 15:
@@ -136,9 +137,15 @@ def generate_correlated_record():
     annual_mileage = int(random.gauss(12000, 4000))
     annual_mileage = max(1000, min(40000, annual_mileage))
     
-    # Credit score (normal distribution, 300-850)
-    credit_score = int(random.gauss(680, 80))
-    credit_score = max(300, min(850, credit_score))
+    # License type (Japan-specific, correlated with experience and claims)
+    if years_licensed < 1:
+        license_type = 'green'
+    elif num_claims_3yr >= 2 or at_fault_claims >= 1:
+        license_type = 'blue'
+    elif years_licensed >= 5 and num_claims_3yr == 0:
+        license_type = 'gold'
+    else:
+        license_type = random.choice(['blue', 'gold'])
     
     # Insurance lapses (most people have 0)
     prior_insurance_lapses = random.choices([0, 1, 2, 3], 
@@ -156,7 +163,7 @@ def generate_correlated_record():
         'at_fault_claims': at_fault_claims,
         'vehicle_age': vehicle_age,
         'annual_mileage': annual_mileage,
-        'credit_score': credit_score,
+        'license_type': license_type,
         'marital_status': marital_status,
         'prior_insurance_lapses': prior_insurance_lapses,
         'location_risk_score': location_risk_score
@@ -188,13 +195,13 @@ def insert_records(num_records=1000):
                 INSERT INTO training_data (
                     age, gender, years_licensed, num_claims_3yr,
                     total_claim_amount, at_fault_claims, vehicle_age,
-                    annual_mileage, credit_score, marital_status,
+                    annual_mileage, license_type, marital_status,
                     prior_insurance_lapses, location_risk_score,
                     application_denied, risk_level, premium_multiplier
                 ) VALUES (
                     %(age)s, %(gender)s, %(years_licensed)s, %(num_claims_3yr)s,
                     %(total_claim_amount)s, %(at_fault_claims)s, %(vehicle_age)s,
-                    %(annual_mileage)s, %(credit_score)s, %(marital_status)s,
+                    %(annual_mileage)s, %(license_type)s, %(marital_status)s,
                     %(prior_insurance_lapses)s, %(location_risk_score)s,
                     %(application_denied)s, %(risk_level)s, %(premium_multiplier)s
                 )

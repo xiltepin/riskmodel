@@ -1,87 +1,109 @@
 <div class="container">
   <mat-card class="assessment-card">
     <mat-card-header>
-      <mat-card-title>🚗 Evaluación de Riesgo - Seguro Automotriz</mat-card-title>
-      <mat-card-subtitle>Ingresa los datos del conductor para obtener una predicción instantánea</mat-card-subtitle>
+      <mat-card-title>🚗 Risk Assessment - Auto Insurance</mat-card-title>
+      <mat-card-subtitle>Enter driver information for an instant prediction</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
       <form [formGroup]="assessmentForm" (ngSubmit)="onSubmit()">
         <div class="form-grid">
           <mat-form-field appearance="outline">
-            <mat-label>Edad</mat-label>
+            <mat-label>Age</mat-label>
             <input matInput type="number" formControlName="age" required>
-            <mat-error>Edad entre 16 y 85 años</mat-error>
+            <mat-error>Age between 16 and 85 years</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Género</mat-label>
+            <mat-label>Gender</mat-label>
             <mat-select formControlName="gender" required>
-              <mat-option value="male">Masculino</mat-option>
-              <mat-option value="female">Femenino</mat-option>
-              <mat-option value="other">Otro</mat-option>
+              <mat-option value="male">Male</mat-option>
+              <mat-option value="female">Female</mat-option>
+              <mat-option value="other">Other</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Años con licencia</mat-label>
+            <mat-label>Years Licensed</mat-label>
             <input matInput type="number" formControlName="years_licensed" required>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Reclamaciones (últimos 3 años)</mat-label>
+            <mat-label>Claims (last 3 years)</mat-label>
             <input matInput type="number" formControlName="num_claims_3yr">
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Monto total reclamado ($)</mat-label>
+            <mat-label>Total Claimed Amount ($)</mat-label>
             <input matInput type="number" formControlName="total_claim_amount">
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Reclamaciones por culpa</mat-label>
+            <mat-label>At-fault Claims</mat-label>
             <input matInput type="number" formControlName="at_fault_claims">
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Edad del vehículo (años)</mat-label>
+            <mat-label>Vehicle Age (years)</mat-label>
             <input matInput type="number" formControlName="vehicle_age">
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Kilometraje anual</mat-label>
+            <mat-label>Annual Mileage</mat-label>
             <input matInput type="number" formControlName="annual_mileage">
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Puntaje crediticio</mat-label>
-            <input matInput type="number" formControlName="credit_score">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Driver's License Type</mat-label>
+            <mat-select formControlName="license_type" required>
+              <mat-option value="green">
+                <span class="license-option">
+                  <span class="color-dot green-dot"></span>
+                  Green License (Beginner - less than 1 year)
+                </span>
+              </mat-option>
+              <mat-option value="blue">
+                <span class="license-option">
+                  <span class="color-dot blue-dot"></span>
+                  Blue License (Standard driver)
+                </span>
+              </mat-option>
+              <mat-option value="gold">
+                <span class="license-option">
+                  <span class="color-dot gold-dot"></span>
+                  Gold License (Excellent driver - no violations 5+ years)
+                </span>
+              </mat-option>
+            </mat-select>
+            <!-- <mat-hint align="start" class="custom-hint">
+              <strong>💡 Tip:</strong> Gold license holders receive the best insurance rates in Japan!
+            </mat-hint> -->
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Estado civil</mat-label>
+            <mat-label>Marital Status</mat-label>
             <mat-select formControlName="marital_status">
-              <mat-option value="married">Casado/a</mat-option>
-              <mat-option value="single">Soltero/a</mat-option>
-              <mat-option value="divorced">Divorciado/a</mat-option>
-              <mat-option value="widowed">Viudo/a</mat-option>
+              <mat-option value="married">Married</mat-option>
+              <mat-option value="single">Single</mat-option>
+              <mat-option value="divorced">Divorced</mat-option>
+              <mat-option value="widowed">Widowed</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Lapsos de seguro previos</mat-label>
+            <mat-label>Prior Insurance Lapses</mat-label>
             <input matInput type="number" formControlName="prior_insurance_lapses">
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Riesgo ubicación (0.0 - 1.0)</mat-label>
+            <mat-label>Location Risk (0.0 - 1.0)</mat-label>
             <input matInput type="number" step="0.01" formControlName="location_risk_score">
           </mat-form-field>
         </div>
 
         <div class="actions">
           <button mat-raised-button color="primary" type="submit" [disabled]="loading || assessmentForm.invalid">
-            <span *ngIf="!loading">Evaluar Riesgo</span>
+            <span *ngIf="!loading">Assess Risk</span>
             <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
           </button>
         </div>
@@ -93,16 +115,16 @@
   <mat-card *ngIf="result" [ngClass]="getRiskClass()" class="result-card">
     <mat-card-header>
       <mat-card-title>
-        {{ result.decision === 'APPROVED' ? '✅ Solicitud APROBADA' : '❌ Solicitud DENEGADA' }}
+        {{ result.decision === 'APPROVED' ? '✅ Application APPROVED' : '❌ Application DENIED' }}
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div class="result-grid">
-        <p><strong>Probabilidad de denegación:</strong> {{ (result.denial_probability * 100).toFixed(1) }}%</p>
-        <p><strong>Nivel de riesgo:</strong> <span [ngClass]="getRiskTextClass()">{{ result.risk_level }}</span></p>
-        <p><strong>Multiplicador de prima:</strong> ×{{ result.premium_multiplier.toFixed(2) }}</p>
-        <p><strong>Confianza del modelo:</strong> {{ (result.confidence * 100).toFixed(1) }}%</p>
-        <p class="small">Versión del modelo: {{ result.model_version }}</p>
+        <p><strong>Denial Probability:</strong> {{ (result.denial_probability * 100).toFixed(1) }}%</p>
+        <p><strong>Risk Level:</strong> <span [ngClass]="getRiskTextClass()">{{ result.risk_level }}</span></p>
+        <p><strong>Premium Multiplier:</strong> ×{{ result.premium_multiplier.toFixed(2) }}</p>
+        <p><strong>Model Confidence:</strong> {{ (result.confidence * 100).toFixed(1) }}%</p>
+        <p class="small">Model Version: {{ result.model_version }}</p>
       </div>
     </mat-card-content>
   </mat-card>

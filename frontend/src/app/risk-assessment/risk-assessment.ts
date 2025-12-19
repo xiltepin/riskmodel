@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ChangeDetectorRef } from '@angular/core';  // ← NUEVO IMPORT
 import { environment } from '../../environments/environment';
 
 interface PredictionResult {
@@ -36,11 +37,15 @@ interface PredictionResult {
   styleUrls: ['./risk-assessment.scss']
 })
 export class RiskAssessmentComponent {
+  private fb = inject(FormBuilder);
+  private http = inject(HttpClient);
+  private cdr = inject(ChangeDetectorRef);  // ← NUEVO: ChangeDetectorRef
+
   assessmentForm: FormGroup;
   result: PredictionResult | null = null;
   loading = false;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor() {
     this.assessmentForm = this.fb.group({
       age: [35, [Validators.required, Validators.min(16), Validators.max(85)]],
       gender: ['female', Validators.required],
@@ -50,7 +55,7 @@ export class RiskAssessmentComponent {
       at_fault_claims: [0, Validators.min(0)],
       vehicle_age: [3, Validators.min(0)],
       annual_mileage: [12000, Validators.min(0)],
-      credit_score: [750, [Validators.min(300), Validators.max(850)]],
+      license_type: ['blue', Validators.required],  // Default to standard
       marital_status: ['married'],
       prior_insurance_lapses: [0, Validators.min(0)],
       location_risk_score: [0.3, [Validators.min(0), Validators.max(1)]]
@@ -72,7 +77,7 @@ export class RiskAssessmentComponent {
       at_fault_claims: Number(this.assessmentForm.value.at_fault_claims || 0),
       vehicle_age: Number(this.assessmentForm.value.vehicle_age || 5),
       annual_mileage: Number(this.assessmentForm.value.annual_mileage || 12000),
-      credit_score: Number(this.assessmentForm.value.credit_score || 680),
+      license_type: this.assessmentForm.value.license_type.toLowerCase(),
       marital_status: this.assessmentForm.value.marital_status.toLowerCase(),
       prior_insurance_lapses: Number(this.assessmentForm.value.prior_insurance_lapses || 0),
       location_risk_score: Number(this.assessmentForm.value.location_risk_score || 0.5)
@@ -81,13 +86,16 @@ export class RiskAssessmentComponent {
     this.http.post<PredictionResult>(`${environment.apiUrl}/api/predict`, payload)
       .subscribe({
         next: (res) => {
+          console.log('✅ Respuesta recibida:', res);  // Para verificar en consola
           this.result = res;
           this.loading = false;
+          this.cdr.detectChanges();  // ← FORZAR DETECCIÓN DE CAMBIOS
         },
         error: (err) => {
-          console.error('Error en predicción:', err);
-          alert('No se pudo conectar al backend. Asegúrate de que Flask esté corriendo en puerto 5001');
+          console.error('❌ Error en predicción:', err);
+          alert('Connection error. Is the backend running on port 5001?');
           this.loading = false;
+          this.cdr.detectChanges();
         }
       });
   }

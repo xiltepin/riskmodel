@@ -50,7 +50,7 @@ def load_training_data():
                 at_fault_claims,
                 vehicle_age,
                 annual_mileage,
-                credit_score,
+                license_type_encoded,
                 marital_encoded,
                 prior_insurance_lapses,
                 location_risk_score,
@@ -79,7 +79,7 @@ def prepare_features(df):
     feature_cols = [
         'age', 'gender_encoded', 'years_licensed', 'num_claims_3yr',
         'total_claim_amount', 'at_fault_claims', 'vehicle_age',
-        'annual_mileage', 'credit_score', 'marital_encoded',
+        'annual_mileage', 'license_type_encoded', 'marital_encoded',
         'prior_insurance_lapses', 'location_risk_score'
     ]
     
@@ -199,63 +199,64 @@ def save_models(denial_model, risk_model, feature_names, metrics):
     print(f"   ✓ File size: {os.path.getsize('models/risk_model.pkl') / 1024:.1f} KB")
 
 def test_prediction(model_data):
-    """Test model with sample predictions"""
+    """Test model with sample predictions - Japan version"""
     print("\n🧪 Testing model with sample data...")
     
     denial_model = model_data['denial_model']
     risk_model = model_data['risk_model']
     feature_names = model_data['feature_names']
     
-    # Test case 1: Low risk driver
+    risk_labels = ['LOW', 'MEDIUM', 'HIGH', 'VERY_HIGH']
+    
+    # Test case 1: Gold license - Excellent driver (should be LOW risk)
     test_case_1 = pd.DataFrame([{
-        'age': 35,
+        'age': 45,
         'gender_encoded': 0,  # Female
-        'years_licensed': 15,
+        'years_licensed': 25,
         'num_claims_3yr': 0,
         'total_claim_amount': 0,
         'at_fault_claims': 0,
-        'vehicle_age': 3,
-        'annual_mileage': 12000,
-        'credit_score': 750,
+        'vehicle_age': 4,
+        'annual_mileage': 9000,
+        'license_type_encoded': 0,  # Gold = 0
         'marital_encoded': 0,  # Married
         'prior_insurance_lapses': 0,
         'location_risk_score': 0.3
-    }])
+    }], columns=feature_names)
     
-    denial_prob = denial_model.predict_proba(test_case_1)[0][1]
-    risk_pred = risk_model.predict(test_case_1)[0]
-    risk_labels = ['LOW', 'MEDIUM', 'HIGH', 'VERY_HIGH']
+    denial_prob_1 = denial_model.predict_proba(test_case_1)[0][1]
+    risk_pred_1 = risk_model.predict(test_case_1)[0]
     
-    print(f"\n   Test Case 1 - Experienced Safe Driver:")
-    print(f"   Age: 35, 15 years licensed, 0 claims, Credit: 750")
-    print(f"   → Denial Probability: {denial_prob*100:.1f}%")
-    print(f"   → Risk Level: {risk_labels[risk_pred]}")
-    print(f"   → Decision: {'✅ APPROVED' if denial_prob < 0.5 else '❌ DENIED'}")
+    print(f"\n   Test Case 1 - Gold License (優良運転者):")
+    print(f"   Age: 45, 25 years licensed, 0 claims, Gold license")
+    print(f"   → Denial Probability: {denial_prob_1*100:.1f}%")
+    print(f"   → Risk Level: {risk_labels[risk_pred_1]}")
+    print(f"   → Decision: {'✅ APPROVED' if denial_prob_1 < 0.5 else '❌ DENIED'}")
     
-    # Test case 2: High risk driver
+    # Test case 2: Green license - Beginner high risk
     test_case_2 = pd.DataFrame([{
-        'age': 21,
+        'age': 18,
         'gender_encoded': 1,  # Male
-        'years_licensed': 2,
-        'num_claims_3yr': 3,
-        'total_claim_amount': 25000,
+        'years_licensed': 0,
+        'num_claims_3yr': 2,
+        'total_claim_amount': 18000,
         'at_fault_claims': 2,
-        'vehicle_age': 1,
-        'annual_mileage': 20000,
-        'credit_score': 580,
+        'vehicle_age': 2,
+        'annual_mileage': 15000,
+        'license_type_encoded': 2,  # Green = 2
         'marital_encoded': 1,  # Single
         'prior_insurance_lapses': 1,
-        'location_risk_score': 0.75
-    }])
+        'location_risk_score': 0.6
+    }], columns=feature_names)
     
-    denial_prob = denial_model.predict_proba(test_case_2)[0][1]
-    risk_pred = risk_model.predict(test_case_2)[0]
+    denial_prob_2 = denial_model.predict_proba(test_case_2)[0][1]
+    risk_pred_2 = risk_model.predict(test_case_2)[0]
     
-    print(f"\n   Test Case 2 - Young High-Risk Driver:")
-    print(f"   Age: 21, 2 years licensed, 3 claims, Credit: 580")
-    print(f"   → Denial Probability: {denial_prob*100:.1f}%")
-    print(f"   → Risk Level: {risk_labels[risk_pred]}")
-    print(f"   → Decision: {'✅ APPROVED' if denial_prob < 0.5 else '❌ DENIED'}")
+    print(f"\n   Test Case 2 - Green License (初心者):")
+    print(f"   Age: 18, <1 year licensed, 2 claims, Green license")
+    print(f"   → Denial Probability: {denial_prob_2*100:.1f}%")
+    print(f"   → Risk Level: {risk_labels[risk_pred_2]}")
+    print(f"   → Decision: {'✅ APPROVED' if denial_prob_2 < 0.5 else '❌ DENIED'}")
 
 def main():
     """Main training pipeline"""

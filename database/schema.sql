@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS training_data (
     at_fault_claims INTEGER NOT NULL DEFAULT 0,
     vehicle_age INTEGER NOT NULL CHECK (vehicle_age >= 0),
     annual_mileage INTEGER NOT NULL CHECK (annual_mileage >= 0),
-    credit_score INTEGER CHECK (credit_score BETWEEN 300 AND 850),
+    license_type VARCHAR(10) NOT NULL CHECK (license_type IN ('green', 'blue', 'gold')),
     marital_status VARCHAR(20) NOT NULL,
     prior_insurance_lapses INTEGER NOT NULL DEFAULT 0,
     location_risk_score DECIMAL(3, 2) NOT NULL CHECK (location_risk_score BETWEEN 0 AND 1),
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS predictions (
     at_fault_claims INTEGER,
     vehicle_age INTEGER,
     annual_mileage INTEGER,
-    credit_score INTEGER,
+    license_type VARCHAR(20),
     marital_status VARCHAR(20),
     prior_insurance_lapses INTEGER,
     location_risk_score DECIMAL(3, 2),
@@ -66,7 +66,11 @@ SELECT
     at_fault_claims,
     vehicle_age,
     annual_mileage,
-    credit_score,
+    CASE license_type
+        WHEN 'gold' THEN 0
+        WHEN 'blue' THEN 1
+        WHEN 'green' THEN 2 
+    END as license_type_encoded,
     CASE marital_status
         WHEN 'Married' THEN 0
         WHEN 'Single' THEN 1
