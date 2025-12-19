@@ -38,3 +38,4 @@ Thumbs.db
 # Node modules (Angular later)
 frontend/node_modules/
 frontend/dist/
+models/*.pkl
