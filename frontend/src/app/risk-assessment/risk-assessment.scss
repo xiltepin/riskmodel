@@ -1,0 +1,54 @@
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.assessment-card {
+  margin-bottom: 2rem;
+  padding: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.actions {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.result-card {
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+
+  &.low-risk { background-color: #e8f5e8; border-left: 6px solid #4caf50; }
+  &.medium-risk { background-color: #fff8e1; border-left: 6px solid #ffc107; }
+  &.high-risk { background-color: #ffebee; border-left: 6px solid #f44336; }
+  &.very-high-risk { background-color: #ffebee; border-left: 8px solid #d32f2f; }
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  font-size: 1.1rem;
+}
+
+.risk-text {
+  font-weight: bold;
+  &.low-risk { color: #2e7d32; }
+  &.medium-risk { color: #ff8f00; }
+  &.high-risk { color: #c62828; }
+  &.very-high-risk { color: #b71c1c; }
+}
+
+.small {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 1rem;
+}

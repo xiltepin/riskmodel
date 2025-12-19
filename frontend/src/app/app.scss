@@ -1,0 +1,49 @@
+@import '@angular/material/prebuilt-themes/azure-blue.css'; // Ya lo tienes por el theme
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+.main-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: linear-gradient(90deg, #1976d2, #42a5f5);
+  color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+
+  h1 {
+    margin: 0;
+    font-size: 2.5rem;
+  }
+
+  .subtitle {
+    margin: 0.5rem 0 0;
+    font-size: 1.2rem;
+    opacity: 0.9;
+  }
+}
+
+.content {
+  flex: 1;
+  padding: 2rem 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.footer {
+  text-align: center;
+  padding: 1.5rem;
+  background: #1976d2;
+  color: white;
+  font-size: 0.9rem;
+}
