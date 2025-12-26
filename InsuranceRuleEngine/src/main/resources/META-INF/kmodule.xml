@@ -1,0 +1,5 @@
+<kmodule xmlns="http://www.drools.org/xsd/kmodule">
+    <kbase name="rules" packages="com.yourcompany.insurance" default="true">
+        <ksession name="rulesSession" default="true"/>
+    </kbase>
+</kmodule>
