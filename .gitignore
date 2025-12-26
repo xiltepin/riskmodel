@@ -1,33 +1,42 @@
-# Virtual environments
-backend/.venv/
-backend/venv/
-.venv/
-venv/
+# General
+*.log
+*.tmp
+*.pid
+*.cache
+*.lock
+
+# IDEs and editors
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+*.iml
+
+# Node.js
+node_modules/
+package-lock.json
+yarn-error.log
+
 # Python
 __pycache__/
-*.py[cod]
-*.so
-*.egg-info/
 *.pyc
-# Model files
-*.pkl
-*.joblib
-# Environment variables
+*.pyo
+*.pyd
+
+# Angular
+dist/
+out-tsc/
+*.js
+*.js.map
+*.ngfactory.ts
+*.ngsummary.json
+*.scss.d.ts
+
+# Flask
+instance/
+.flaskenv
 .env
-*.env
-# Database
-*.db
-*.sqlite
-# IDE
-.vscode/
-.idea/
-*.swp
-# OS
-.DS_Store
-Thumbs.db
-# Logs
-*.log
-# Node modules (Angular later)
-frontend/node_modules/
-frontend/dist/
-models/*.pk
+
+# Drools
+target/
+work/
