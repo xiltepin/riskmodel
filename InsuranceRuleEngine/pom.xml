@@ -11,6 +11,7 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <drools.version>7.73.0.Final</drools.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
     <dependencies>
@@ -26,9 +27,21 @@
             <version>${drools.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-mvel</artifactId>
+            <version>${drools.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-api</artifactId>
             <version>${drools.version}</version>
+        </dependency>
+        
+        <!-- SLF4J implementation (to get rid of the SLF4J warning) -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.36</version>
         </dependency>
     </dependencies>
     
@@ -38,6 +51,14 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>com.yourcompany.insurance.InsuranceApp</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
