@@ -3,39 +3,31 @@ backend/.venv/
 backend/venv/
 .venv/
 venv/
-
 # Python
 __pycache__/
 *.py[cod]
 *.so
 *.egg-info/
 *.pyc
-
 # Model files
 *.pkl
 *.joblib
-
 # Environment variables
 .env
 *.env
-
 # Database
 *.db
 *.sqlite
-
 # IDE
 .vscode/
 .idea/
 *.swp
-
 # OS
 .DS_Store
 Thumbs.db
-
 # Logs
 *.log
-
 # Node modules (Angular later)
 frontend/node_modules/
 frontend/dist/
-models/*.pkl
+models/*.pk
