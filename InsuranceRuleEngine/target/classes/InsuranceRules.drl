@@ -1,0 +1,12 @@
+package com.yourcompany.insurance;
+import com.yourcompany.model.RiskAssessmentResult;
+rule "Calculate Premium"
+when
+$result : RiskAssessmentResult()
+then
+double basePremium = 500.0; // Base premium amount
+double riskMultiplier = $result.getLocationRiskScore(); // Assuming location risk score is part of the result
+double finalPremium = basePremium * (1 + riskMultiplier);
+$result.setFinalPremium(finalPremium);
+update($result);
+end
