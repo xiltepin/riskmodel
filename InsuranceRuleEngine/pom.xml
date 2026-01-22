@@ -36,6 +36,11 @@
 
         <!-- Drools Dependencies -->
         <dependency>
+        <groupId>org.drools</groupId>
+            <artifactId>drools-xml-support</artifactId>
+            <version>${drools.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-core</artifactId>
             <version>${drools.version}</version>
@@ -58,6 +63,11 @@
         <dependency>
             <groupId>org.kie</groupId>
             <artifactId>kie-internal</artifactId>
+            <version>${drools.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-mvel</artifactId>
             <version>${drools.version}</version>
         </dependency>
 

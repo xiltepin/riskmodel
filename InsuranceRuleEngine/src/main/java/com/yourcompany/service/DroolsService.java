@@ -18,6 +18,12 @@ public class DroolsService {
 
     public void executePremiumCalculationRules(RiskAssessmentResult result) {
         KieSession kieSession = kieContainer.newKieSession("rulesSession");
+        if (kieSession == null) {
+            throw new IllegalStateException(
+                "KieSession 'rulesSession' not found. Check kmodule.xml"
+            );
+        }
+
         try {
             kieSession.insert(result);
             kieSession.fireAllRules();

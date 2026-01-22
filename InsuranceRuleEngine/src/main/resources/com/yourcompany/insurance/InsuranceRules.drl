@@ -1,44 +1,59 @@
-package com.yourcompany.insurance;
+package com.yourcompany.insurance
 
-import com.yourcompany.model.RiskAssessmentResult;
+import com.yourcompany.model.RiskAssessmentResult
 
 rule "Calculate Premium Based on Location Risk"
-    when
-        $result : RiskAssessmentResult(basePremium > 0)
-    then
-        double basePremium = $result.getBasePremium();
-        double riskMultiplier = $result.getLocationRiskScore();
-        double finalPremium = basePremium * (1 + riskMultiplier);
-        
-        $result.setFinalPremium(finalPremium);
-        
-        System.out.println("Drools Rule Executed:");
-        System.out.println("  Base Premium: $" + basePremium);
-        System.out.println("  Risk Multiplier: " + riskMultiplier);
-        System.out.println("  Final Premium: $" + finalPremium);
-        
-        update($result);
+no-loop true
+when
+    $result : RiskAssessmentResult(
+        basePremium > 0,
+        finalPremium == 0
+    )
+then
+    double basePremium = $result.getBasePremium();
+    double riskMultiplier = $result.getLocationRiskScore();
+    double finalPremium = basePremium * (1 + riskMultiplier);
+
+    $result.setFinalPremium(finalPremium);
+
+    System.out.println("Drools Rule Executed:");
+    System.out.println("  Base Premium: $" + basePremium);
+    System.out.println("  Risk Multiplier: " + riskMultiplier);
+    System.out.println("  Final Premium: $" + finalPremium);
+
+    update($result);
 end
+
 
 rule "Minimum Premium Rule"
-    when
-        $result : RiskAssessmentResult(finalPremium < 200)
-    then
-        System.out.println("Applying Minimum Premium Rule");
-        $result.setFinalPremium(200.0);
-        update($result);
+no-loop true
+when
+    $result : RiskAssessmentResult(
+        finalPremium > 0,
+        finalPremium < 200
+    )
+then
+    System.out.println("Applying Minimum Premium Rule");
+    $result.setFinalPremium(200.0);
+    update($result);
 end
 
+
 rule "High Risk Surcharge"
-    when
-        $result : RiskAssessmentResult(locationRiskScore > 0.7)
-    then
-        double currentPremium = $result.getFinalPremium();
-        double surcharge = currentPremium * 0.15; // 15% surcharge for high risk
-        $result.setFinalPremium(currentPremium + surcharge);
-        
-        System.out.println("High Risk Surcharge Applied: +15%");
-        System.out.println("  New Premium: $" + $result.getFinalPremium());
-        
-        update($result);
+no-loop true
+when
+    $result : RiskAssessmentResult(
+        locationRiskScore > 0.7,
+        finalPremium > 0
+    )
+then
+    double currentPremium = $result.getFinalPremium();
+    double surcharge = currentPremium * 0.15;
+
+    $result.setFinalPremium(currentPremium + surcharge);
+
+    System.out.println("High Risk Surcharge Applied: +15%");
+    System.out.println("  New Premium: $" + $result.getFinalPremium());
+
+    update($result);
 end
