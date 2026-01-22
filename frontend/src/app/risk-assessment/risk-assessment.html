@@ -1,4 +1,10 @@
 <div class="container">
+  <div class="back-button-container">
+    <button mat-button routerLink="/" class="back-button">
+      ← Back to Home
+    </button>
+  </div>
+
   <mat-card class="assessment-card">
     <mat-card-header>
       <mat-card-title>🚗 Risk Assessment - Auto Insurance</mat-card-title>
@@ -75,9 +81,6 @@
                 </span>
               </mat-option>
             </mat-select>
-            <!-- <mat-hint align="start" class="custom-hint">
-              <strong>💡 Tip:</strong> Gold license holders receive the best insurance rates in Japan!
-            </mat-hint> -->
           </mat-form-field>
 
           <mat-form-field appearance="outline">
@@ -111,7 +114,7 @@
     </mat-card-content>
   </mat-card>
 
-  <!-- Resultado -->
+  <!-- Result -->
   <mat-card *ngIf="result" [ngClass]="getRiskClass()" class="result-card">
     <mat-card-header>
       <mat-card-title>

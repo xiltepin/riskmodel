@@ -2,12 +2,13 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ChangeDetectorRef } from '@angular/core';  // ← NUEVO IMPORT
+import { ChangeDetectorRef } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 interface PredictionResult {
@@ -27,6 +28,7 @@ interface PredictionResult {
     CommonModule,
     ReactiveFormsModule,
     HttpClientModule,
+    RouterLink,
     MatCardModule,
     MatInputModule,
     MatSelectModule,
@@ -39,7 +41,7 @@ interface PredictionResult {
 export class RiskAssessmentComponent {
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
-  private cdr = inject(ChangeDetectorRef);  // ← NUEVO: ChangeDetectorRef
+  private cdr = inject(ChangeDetectorRef);
 
   assessmentForm: FormGroup;
   result: PredictionResult | null = null;
@@ -55,7 +57,7 @@ export class RiskAssessmentComponent {
       at_fault_claims: [0, Validators.min(0)],
       vehicle_age: [3, Validators.min(0)],
       annual_mileage: [12000, Validators.min(0)],
-      license_type: ['blue', Validators.required],  // Default to standard
+      license_type: ['blue', Validators.required],
       marital_status: ['married'],
       prior_insurance_lapses: [0, Validators.min(0)],
       location_risk_score: [0.3, [Validators.min(0), Validators.max(1)]]
@@ -86,10 +88,10 @@ export class RiskAssessmentComponent {
     this.http.post<PredictionResult>(`${environment.apiUrl}/api/predict`, payload)
       .subscribe({
         next: (res) => {
-          console.log('✅ Respuesta recibida:', res);  // Para verificar en consola
+          console.log('✅ Respuesta recibida:', res);
           this.result = res;
           this.loading = false;
-          this.cdr.detectChanges();  // ← FORZAR DETECCIÓN DE CAMBIOS
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('❌ Error en predicción:', err);
