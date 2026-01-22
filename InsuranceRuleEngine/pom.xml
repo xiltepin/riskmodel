@@ -65,6 +65,11 @@
             <artifactId>kie-internal</artifactId>
             <version>${drools.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-mvel</artifactId>
+            <version>${drools.version}</version>
+        </dependency>
 
         <!-- Spring Boot DevTools -->
         <dependency>
