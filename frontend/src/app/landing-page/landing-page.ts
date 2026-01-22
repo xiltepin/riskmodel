@@ -15,5 +15,5 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./landing-page.scss']
 })
 export class LandingPageComponent {
-  title = 'Auto Insurance Risk Assessment System';
+  title = 'Auto Insurance';
 }
