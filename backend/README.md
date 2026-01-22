@@ -253,7 +253,7 @@ conn.close()
 ```bash
 # Make sure venv is activated
 source .venv/bin/activate
-
+python3 app.py
 # Reinstall
 pip install psycopg2-binary
 ```

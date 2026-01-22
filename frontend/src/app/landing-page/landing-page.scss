@@ -65,12 +65,20 @@
 
 .cta-section {
   margin: 3rem 0 2rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .cta-button {
   font-size: 1.2rem;
   padding: 0.8rem 3rem;
   height: auto;
+
+  &.secondary {
+    background-color: #ff6f00;
+  }
 }
 
 .footer-text {

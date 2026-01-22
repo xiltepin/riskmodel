@@ -1,0 +1,120 @@
+.container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.rules-card, .result-card, .info-card {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+}
+
+.info-section {
+  background-color: #e3f2fd;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #1976d2;
+
+  p {
+    margin: 0.5rem 0;
+  }
+
+  .info-text {
+    font-size: 0.9rem;
+    color: #555;
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.actions {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.result-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8f5e9 100%);
+  border-left: 6px solid #4caf50;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.result-item {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &.highlight {
+    background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+    color: white;
+    font-weight: bold;
+  }
+
+  .label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+  }
+
+  .value {
+    font-size: 1.5rem;
+    font-weight: 600;
+
+    &.final {
+      font-size: 2rem;
+      color: white;
+    }
+  }
+}
+
+.formula {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  text-align: center;
+
+  .formula-text {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    color: #1976d2;
+    margin: 0.5rem 0;
+  }
+}
+
+.info-card {
+  background: #fff3e0;
+  border-left: 4px solid #ff6f00;
+
+  ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+
+    li {
+      margin: 0.5rem 0;
+      line-height: 1.6;
+    }
+  }
+
+  .note {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 4px;
+    border-left: 3px solid #ff6f00;
+  }
+}
