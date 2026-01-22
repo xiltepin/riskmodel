@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { RiskAssessmentComponent } from './risk-assessment/risk-assessment';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    RiskAssessmentComponent
+    RouterOutlet
   ],
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
-export class AppComponent {  // ← Aquí el cambio: AppComponent
+export class AppComponent {
   title = 'Insurance Risk Assessment POC';
 }

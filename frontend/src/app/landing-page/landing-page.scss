@@ -1,0 +1,82 @@
+.landing-container {
+  max-width: 1000px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+
+.hero-card {
+  padding: 2rem;
+  text-align: center;
+
+  mat-card-header {
+    display: block;
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin: 0 0 1rem;
+    color: #1976d2;
+  }
+
+  mat-card-subtitle {
+    font-size: 1.2rem;
+    color: #666;
+  }
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+  text-align: center;
+}
+
+.feature {
+  padding: 1.5rem;
+  border-radius: 8px;
+  background: #f5f7fa;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .feature-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    color: #1976d2;
+    margin: 0.5rem 0;
+    font-size: 1.3rem;
+  }
+
+  p {
+    color: #666;
+    line-height: 1.6;
+    margin: 0.5rem 0 0;
+  }
+}
+
+.cta-section {
+  margin: 3rem 0 2rem;
+}
+
+.cta-button {
+  font-size: 1.2rem;
+  padding: 0.8rem 3rem;
+  height: auto;
+}
+
+.footer-text {
+  font-size: 0.9rem;
+  color: #999;
+  margin: 2rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+}
