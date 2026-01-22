@@ -1,2 +1,4 @@
-com/yourcompany/insurance/InsuranceApp.class
+com/yourcompany/InsuranceRulesApplication.class
+com/yourcompany/controller/RulesEngineController.class
+com/yourcompany/service/DroolsService.class
 com/yourcompany/model/RiskAssessmentResult.class

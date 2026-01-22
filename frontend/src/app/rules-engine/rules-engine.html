@@ -1,0 +1,90 @@
+<div class="container">
+  <mat-card class="rules-card">
+    <mat-card-header>
+      <mat-card-title>⚙️ Drools Rules Engine - Premium Calculator</mat-card-title>
+      <mat-card-subtitle>Calculate insurance premium using business rules</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="info-section">
+        <p><strong>Current Rule:</strong> Final Premium = Base Premium × (1 + Location Risk Score)</p>
+        <p class="info-text">This demonstration uses Drools to apply business rules dynamically without code changes.</p>
+      </div>
+
+      <form [formGroup]="premiumForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Base Premium ($)</mat-label>
+            <input matInput type="number" formControlName="basePremium" required>
+            <mat-hint>Starting premium amount before risk adjustments</mat-hint>
+            <mat-error>Base premium must be at least $100</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Location Risk Score (0.0 - 1.0)</mat-label>
+            <input matInput type="number" step="0.01" formControlName="locationRiskScore" required>
+            <mat-hint>0.0 = lowest risk, 1.0 = highest risk</mat-hint>
+            <mat-error>Score must be between 0.0 and 1.0</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading || premiumForm.invalid">
+            <span *ngIf="!loading">Calculate Premium</span>
+            <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Result -->
+  <mat-card *ngIf="result" class="result-card">
+    <mat-card-header>
+      <mat-card-title>💰 Premium Calculation Result</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="result-grid">
+        <div class="result-item">
+          <span class="label">Base Premium:</span>
+          <span class="value">\${{ result.basePremium.toFixed(2) }}</span>
+        </div>
+        <div class="result-item">
+          <span class="label">Location Risk Score:</span>
+          <span class="value">{{ result.locationRiskScore.toFixed(2) }}</span>
+        </div>
+        <div class="result-item">
+          <span class="label">Risk Multiplier:</span>
+          <span class="value">{{ result.riskMultiplier.toFixed(2) }}x</span>
+        </div>
+        <div class="result-item highlight">
+          <span class="label">Final Premium:</span>
+          <span class="value final">\${{ result.finalPremium.toFixed(2) }}</span>
+        </div>
+      </div>
+      <div class="formula">
+        <p><strong>Formula Applied:</strong></p>
+        <p class="formula-text">
+          \${{ result.finalPremium.toFixed(2) }} = \${{ result.basePremium.toFixed(2) }} × (1 + {{ result.locationRiskScore.toFixed(2) }})
+        </p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Info Card -->
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-card-title>📋 About Drools Rules Engine</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Drools is a Business Rules Management System (BRMS) that allows you to:</p>
+      <ul>
+        <li>Define business logic in declarative rules files (.drl)</li>
+        <li>Modify rules without recompiling the application</li>
+        <li>Separate business logic from application code</li>
+        <li>Execute complex rule chains and reasoning</li>
+      </ul>
+      <p class="note"><strong>Next Steps:</strong> You can extend this with more complex rules like age-based discounts, vehicle type adjustments, or multi-factor calculations.</p>
+    </mat-card-content>
+  </mat-card>
+</div>
